@@ -1,3 +1,4 @@
+
 require("dotenv").config();
 
 const express = require("express");
@@ -12,15 +13,15 @@ const staffRoutes = require("./routes/staffRoutes");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
+
 app.set("trust proxy", 1);
+
 const PORT = process.env.PORT || 5000;
 
 const requiredEnvVariables = [
     "ADMIN_EMAIL",
     "ADMIN_PASSWORD_HASH",
     "JWT_SECRET",
-    "DB_NAME",
-    "DB_USER",
 ];
 
 const missingVariables = requiredEnvVariables.filter(
@@ -51,7 +52,10 @@ app.use(helmet());
 app.use(
     cors({
         origin(origin, callback) {
-            const normalizedOrigin = origin ? origin.replace(/\/+$/, "") : "";
+            const normalizedOrigin = origin
+                ? origin.replace(/\/+$/, "")
+                : "";
+
             if (
                 !origin ||
                 allowedOrigins.includes("*") ||
@@ -75,6 +79,7 @@ app.use("/api/health", healthRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/staff", staffRoutes);
 app.use("/api/branches", branchRoutes);
+
 // 404 handler
 app.use((req, res) => {
     res.status(404).json({
@@ -86,25 +91,25 @@ app.use((req, res) => {
 // Central error handler
 app.use(errorHandler);
 
-// Start server after checking MySQL connection
+// Start server after checking database connection
 const startServer = async () => {
     try {
         const connection = await pool.getConnection();
 
-        console.log("MySQL Database Connected Successfully!");
+        console.log("TiDB Cloud Database Connected Successfully!");
 
         connection.release();
 
         app.listen(PORT, "0.0.0.0", () => {
             console.log("-------------------------------------");
             console.log("Bloom & Blossom Backend Started");
-            console.log(`Server: http://localhost:${PORT}`);
+            console.log(`Port: ${PORT}`);
             console.log(`Database: ${process.env.DB_NAME}`);
-            console.log(`Environment: ${process.env.NODE_ENV}`);
+            console.log(`Environment: ${process.env.NODE_ENV || "development"}`);
             console.log("-------------------------------------");
         });
     } catch (error) {
-        console.error("MySQL Connection Failed:", error.message);
+        console.error("Database Connection Failed:", error.message);
         process.exit(1);
     }
 };
@@ -115,8 +120,13 @@ startServer();
 const shutdown = async () => {
     console.log("Closing Bloom & Blossom backend...");
 
-    await pool.end();
-    process.exit(0);
+    try {
+        await pool.end();
+        process.exit(0);
+    } catch (error) {
+        console.error("Error closing database pool:", error.message);
+        process.exit(1);
+    }
 };
 
 process.on("SIGINT", shutdown);

@@ -5,9 +5,9 @@
   "description": "Bloom & Blossom Backend API",
   "main": "server.js",
   "scripts": {
-    "server": "nodemon",
+    "server": "nodemon server.js",
     "start": "node server.js"
-},
+  },
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
