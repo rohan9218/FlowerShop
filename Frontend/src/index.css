@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+
+.font-poppins {
+    font-family: 'Poppins', sans-serif;
+}
+
+.font-inter {
+    font-family: 'Inter', sans-serif;
+}
+
+
+@import "tailwindcss";
+
+* {
+    font-family: "Plus Jakarta Sans", "Outfit", sans-serif;
+}
+
+h1, h2, h3, h4, .font-heading {
+    font-family: "Outfit", sans-serif;
+}
+
+@theme {
+    --color-primary: #0d5c3a;
+    --color-primary-hover: #09472c;
+    --color-rose-theme: #d77b91;
+    --color-rose-deep: #be185d;
+    --color-half-white: #fffdfb;
+    --color-pinkish-bg: #f9eff2;
+    --color-pinkish-border: #f2e1e7;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #fbf1f4;
+}
+::-webkit-scrollbar-thumb {
+    background: #e2cdd5;
+    border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #d5b8c3;
+}
